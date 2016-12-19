@@ -1,0 +1,214 @@
+@import 'normalize';
+@import 'utility';
+
+$inputHeight: 40px;
+
+//General
+
+body {
+ 
+    background: #ecf0f1;
+    color: #2c3e50;
+    
+}
+
+//Inputs
+
+body input, 
+body .input {
+    
+    border: none;
+    border-bottom: solid 2px #2c3e50;
+    color: #2c3e50;
+    background: transparent;
+    background: rgba(255,255,255,0.4);
+    outline: none;
+    padding: 10px 10px 2px;
+    height: $inputHeight;
+    display: inline-block;
+    vertical-align: bottom;
+    box-sizing: border-box;
+}
+
+//Buttons
+body button,
+body .button {
+    
+    border: none;
+    color: #2c3e50;
+    background: white;
+    outline: none;
+    height: $inputHeight;
+    padding: 10px 15px;
+    margin: 0 4px;
+    display: inline-block;
+    vertical-align: bottom;
+    box-sizing: border-box;
+
+}
+
+//Header
+#app-header {
+    
+    display: none;
+    
+}
+
+//Footer
+#app-footer {
+    
+    display: none;
+    
+}
+//Body
+#app-body {
+    
+    padding: 20px;
+    
+}
+
+.search-bar {
+ 
+    
+    
+}
+
+//card 
+//    card-body
+//        card-menu-button
+//        card-definitions
+//            card-definition card-definition-front card-definition-back
+//                card-input-container
+//                    input
+//                    span
+//                button
+//                       
+//        card-ok-button
+//        card-expand-button
+//    card-extra
+
+.card {
+ 
+    background: #3498db;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    padding: 10px;
+    margin: 10px 0 20px;
+    
+}
+
+.card-menu-button, .card-ok-button, .card-expand-button { display: none; }
+
+.card-definitions { @extend .clearfix;}
+
+.card-definition {
+
+    margin: 0;
+    float: left;
+    padding: 10px;
+    
+    span {
+    
+        display: block;
+        font-size: 0.8em;
+        font-style: italic;
+        
+    }
+    
+    .card-input-container {
+    
+        display: inline-block;
+        vertical-align: top;
+
+    }
+    
+    input, .input {
+        
+        color: white;
+        background: transparent;
+        min-width: 300px;
+        
+    }
+    
+    button, .button {
+        
+        vertical-align: top;
+        display: none;
+        
+    }
+    
+}
+
+.card-extra {
+    
+    @extend .clearfix;
+    
+    background: white;
+    border-top: 4px solid #2c3e50;
+    padding: 20px;
+    border-radius: 0 0 4px 4px;
+    
+    .single-entry {
+     
+        padding-bottom: 10px;
+        
+    }
+    
+    .single-entry-phrase {
+        
+        font-weight: bold;
+    
+    }
+    
+    .single-entry-meanings {
+        
+        margin-top: 5px;
+        border-left: 4px solid #6f9ebe;
+        padding-left: 5px;
+    
+    }
+    
+    .single-meaning {
+        
+        padding: 0 0 8px;
+        
+    }
+
+    .single-example {
+        
+        border-left: 4px solid #6f9ebe;
+        padding-left: 5px;
+        margin-bottom: 14px;
+        
+        div {
+         
+            padding-bottom: 8px;
+            
+        }
+        
+    }
+    
+    .examples-body, .entries-body {
+     
+        max-height: 200px;
+        overflow-y: auto;
+        
+        box-shadow: 0 0 2px rgba(0,0,0,0.5) inset;
+        padding: 10px;
+        border-radius: 4px;
+        
+    }
+    
+    .examples, .entries {
+     
+        max-width: 500px;
+        float: left;
+        padding: 10px;
+        
+    }
+    
+}
+
+
+
