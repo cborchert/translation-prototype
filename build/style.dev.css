@@ -571,7 +571,8 @@ body .button {
   border-radius: 4px;
 }
 .card-extra .examples, .card-extra .entries {
-  max-width: 500px;
+  width: 500px;
+  max-width: 100%;
   float: left;
   padding: 10px;
 }
