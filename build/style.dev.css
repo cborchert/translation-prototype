@@ -452,6 +452,10 @@ template {
   clear: both;
 }
 
+.inline-block {
+  display: inline-block !important;
+}
+
 body {
   background: #ecf0f1;
   color: #2c3e50;
@@ -486,6 +490,37 @@ body .button {
   box-sizing: border-box;
 }
 
+span.ui {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  background: cover;
+}
+span.ui.ui-edit {
+  background-image: url(./img/ui-pencil.png);
+}
+span.ui.ui-pencil {
+  background-image: url(./img/ui-pencil.png);
+}
+span.ui.ui-trash {
+  background-image: url(./img/ui-trash.png);
+}
+span.ui.ui-gear {
+  background-image: url(./img/ui-gear.png);
+}
+span.ui.ui-plus {
+  background-image: url(./img/ui-plus.png);
+}
+span.ui.ui-plus-square {
+  background-image: url(./img/ui-plus-square.png);
+}
+span.ui.ui-chevron-down {
+  background-image: url(./img/ui-chevron-down.png);
+}
+span.ui.ui-chevron-circle-down {
+  background-image: url(./img/ui-chevron-circle-down.png);
+}
+
 #app-header {
   display: none;
 }
@@ -516,23 +551,83 @@ body .button {
   float: left;
   padding: 10px;
 }
-.card-definition span {
+.card-definition span.card-input-language {
   display: block;
   font-size: 0.8em;
   font-style: italic;
+  padding: 2px;
+  float: left;
+}
+.card-definition span.card-translate-from-def {
+  display: block;
+  font-size: 0.8em;
+  font-style: italic;
+  padding: 2px;
+  float: right;
+  color: #afceff;
+  cursor: pointer;
 }
 .card-definition .card-input-container {
   display: inline-block;
   vertical-align: top;
+  cursor: pointer;
 }
 .card-definition input, .card-definition .input {
+  display: inline-block;
   color: white;
   background: transparent;
   min-width: 300px;
+  height: 32px;
+  padding: 10px 2px 2px;
+  transition: 400ms;
+  font-size: 1em;
+  cursor: pointer;
 }
-.card-definition button, .card-definition .button {
-  vertical-align: top;
+.card-definition .card-input-input {
+  position: relative;
+  display: inline-block;
+}
+.card-definition .card-input-input span.ui {
+  position: absolute;
+  bottom: 6px;
+  right: 2px;
+}
+.card-definition button {
+  height: 32px;
+  padding: 10px 0 2px;
+  max-width: 0;
+  font-size: 1em;
+  background: transparent;
+  color: #888;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: 400ms;
+  cursor: pointer;
+}
+.card-definition.editing input {
+  display: inline-block;
+  min-width: 300px;
+  height: 45px;
+  width: auto;
+  opacity: 1;
+  background: #ecf0f1;
+  color: #2c3e50;
+  padding: 10px 15px;
+  font-size: 1.25em;
+  cursor: text;
+}
+.card-definition.editing .card-input-input span.ui {
   display: none;
+}
+.card-definition.editing button {
+  display: inline-block;
+  padding: 10px 15px;
+  background: white;
+  color: #2c8a0e;
+  height: 45px;
+  max-width: 68px;
+  border-bottom: 2px solid #2c8a0e;
 }
 
 .card-extra {

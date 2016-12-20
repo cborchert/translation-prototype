@@ -44,13 +44,16 @@ class CardStore extends EventEmitter {
     
     updateCard( cardKey, cardData ) {
         
+        //console.log(cardKey, cardData);
         var index = _.findIndex( this.cards, {key: cardKey} );
         
-        console.log( this.cards );
+        //console.log( this.cards );
         
         if( index == -1 ){ return false; }
 
+        //console.log("updating card!");
         this.cards[index].cardData = cardData;
+        //console.log(this.cards[index].cardData);
         this.emit("change_cards");
 
     }

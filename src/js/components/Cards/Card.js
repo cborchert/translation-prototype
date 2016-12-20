@@ -1,11 +1,34 @@
 import React from "react";
 import * as CardActions from "../../_actions/CardActions";
 
+import CardDefinition from "./CardDefinition";
+
 export default class Card extends React.Component {
  
     constructor() {
         
         super();
+        
+        this.updateFrontText = this.updateFrontText.bind(this);
+        this.updateBackText = this.updateBackText.bind(this);
+        
+    }
+    
+    updateFrontText(e) {
+        
+        var cardData = this.props.cardData;
+        
+        cardData.frontText = e.target.value;
+        CardActions.updateCard(this.props.cardKey, cardData);
+        
+    }
+    
+    updateBackText(e) {
+        
+        var cardData = this.props.cardData;
+        
+        cardData.backText = e.target.value;
+        CardActions.updateCard(this.props.cardKey, cardData);
         
     }
     
@@ -62,27 +85,13 @@ export default class Card extends React.Component {
                         
         return ( 
         
-            <div class="card">
+            <div class="card" id={"card-"+this.props.cardKey}>
             
                 <div class="card-body">
                     <div class="card-menu-button">menu</div>
                     <div class="card-definitions">
-                        <div class="card-definition card-definition-front">
-                            <div class="card-input-container">
-                                {/*<input value={this.props.cardData.frontText}  />*/}
-                                <div class="input" dangerouslySetInnerHTML={{__html: this.props.cardData.frontText}}></div>
-                                <span>french</span>
-                            </div> 
-                            <button>&rarr; english</button>
-                        </div>
-                        <div class="card-definition card-definition-back">
-                            <div class="card-input-container">
-                                {/*<input value={this.props.cardData.backText}  />*/}
-                                <div class="input" dangerouslySetInnerHTML={{__html: this.props.cardData.backText}}></div>
-                                <span>english</span>
-                            </div>
-                            <button>&larr; french</button>
-                        </div>
+                        <CardDefinition cardKey={this.props.cardKey} toOriginLang={false} label="front" language="français" toLanguage="engish" onInputChange={this.updateFrontText} text={this.props.cardData.frontText} />
+                        <CardDefinition cardKey={this.props.cardKey} toOriginLang={true} label="back" language="english" toLanguage="français" onInputChange={this.updateBackText} text={this.props.cardData.backText} />
                     </div>
                     <div class="card-ok-button">Ok</div>
                     <div class="card-expand-button">expand</div>

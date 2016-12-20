@@ -25574,11 +25574,13 @@
 	        transDir = toOriginLang ? "from=eng&dest=fra" : "from=fra&dest=eng",
 	        format = "format=json&pretty=true",
 	        phrase = "phrase=" + value,
-	        src = baseUrl + transDir + "&" + format + "&" + phrase;
+	        phraseLower = "phrase=" + value.toLowerCase(),
+	        src = baseUrl + transDir + "&" + format + "&" + phrase,
+	        srcLower = baseUrl + transDir + "&" + format + "&" + phraseLower;
 
-	    _axios2.default.get(src).then(function (response) {
+	    _axios2.default.get(srcLower).then(function (response) {
 
-	        var firstResponse = typeof response.data.tuc[0] == "undefined" ? "" : response.data.tuc[0],
+	        var firstResponse = typeof response.data.tuc == "undefined" || typeof response.data.tuc[0] == "undefined" ? "" : response.data.tuc[0],
 	            firstResponsePhrase = typeof firstResponse["phrase"] == "undefined" ? "" : firstResponse["phrase"],
 	            firstResponseText = typeof firstResponsePhrase["text"] == "undefined" ? "" : firstResponsePhrase["text"],
 	            firstResponseMeanings = firstResponse["meanings"],
@@ -27072,15 +27074,18 @@
 	        key: "updateCard",
 	        value: function updateCard(cardKey, cardData) {
 
+	            //console.log(cardKey, cardData);
 	            var index = _underscore2.default.findIndex(this.cards, { key: cardKey });
 
-	            console.log(this.cards);
+	            //console.log( this.cards );
 
 	            if (index == -1) {
 	                return false;
 	            }
 
+	            //console.log("updating card!");
 	            this.cards[index].cardData = cardData;
+	            //console.log(this.cards[index].cardData);
 	            this.emit("change_cards");
 	        }
 	    }, {
@@ -29047,6 +29052,8 @@
 	        key: "updateCards",
 	        value: function updateCards() {
 
+	            //console.log("got an update!");
+
 	            var cardFeed = _CardStore2.default.getCards();
 
 	            this.setState({
@@ -29061,7 +29068,8 @@
 
 	            var cardFeed = this.state.cardFeed.map(function (card) {
 
-	                return _react2.default.createElement(_Card2.default, { key: card.key, cardData: card.cardData });
+	                //console.log( card.key, card.cardData );
+	                return _react2.default.createElement(_Card2.default, { key: card.key, cardKey: card.key, cardData: card.cardData });
 	            });
 
 	            return _react2.default.createElement(
@@ -29097,6 +29105,10 @@
 
 	var CardActions = _interopRequireWildcard(_CardActions);
 
+	var _CardDefinition = __webpack_require__(253);
+
+	var _CardDefinition2 = _interopRequireDefault(_CardDefinition);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -29113,13 +29125,36 @@
 	    function Card() {
 	        _classCallCheck(this, Card);
 
-	        return _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this));
+	        var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this));
+
+	        _this.updateFrontText = _this.updateFrontText.bind(_this);
+	        _this.updateBackText = _this.updateBackText.bind(_this);
+
+	        return _this;
 	    }
 
-	    //Throughout, we need to convert strings to html 
-
-
 	    _createClass(Card, [{
+	        key: "updateFrontText",
+	        value: function updateFrontText(e) {
+
+	            var cardData = this.props.cardData;
+
+	            cardData.frontText = e.target.value;
+	            CardActions.updateCard(this.props.cardKey, cardData);
+	        }
+	    }, {
+	        key: "updateBackText",
+	        value: function updateBackText(e) {
+
+	            var cardData = this.props.cardData;
+
+	            cardData.backText = e.target.value;
+	            CardActions.updateCard(this.props.cardKey, cardData);
+	        }
+
+	        //Throughout, we need to convert strings to html 
+
+	    }, {
 	        key: "render",
 	        value: function render() {
 
@@ -29174,7 +29209,7 @@
 
 	            return _react2.default.createElement(
 	                "div",
-	                { className: "card" },
+	                { className: "card", id: "card-" + this.props.cardKey },
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "card-body" },
@@ -29186,44 +29221,8 @@
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "card-definitions" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "card-definition card-definition-front" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "card-input-container" },
-	                                _react2.default.createElement("div", { className: "input", dangerouslySetInnerHTML: { __html: this.props.cardData.frontText } }),
-	                                _react2.default.createElement(
-	                                    "span",
-	                                    null,
-	                                    "french"
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "button",
-	                                null,
-	                                "\u2192 english"
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "card-definition card-definition-back" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "card-input-container" },
-	                                _react2.default.createElement("div", { className: "input", dangerouslySetInnerHTML: { __html: this.props.cardData.backText } }),
-	                                _react2.default.createElement(
-	                                    "span",
-	                                    null,
-	                                    "english"
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "button",
-	                                null,
-	                                "\u2190 french"
-	                            )
-	                        )
+	                        _react2.default.createElement(_CardDefinition2.default, { cardKey: this.props.cardKey, toOriginLang: false, label: "front", language: "fran\xE7ais", toLanguage: "engish", onInputChange: this.updateFrontText, text: this.props.cardData.frontText }),
+	                        _react2.default.createElement(_CardDefinition2.default, { cardKey: this.props.cardKey, toOriginLang: true, label: "back", language: "english", toLanguage: "fran\xE7ais", onInputChange: this.updateBackText, text: this.props.cardData.backText })
 	                    ),
 	                    _react2.default.createElement(
 	                        "div",
@@ -29276,6 +29275,123 @@
 	}(_react2.default.Component);
 
 		exports.default = Card;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _CardActions = __webpack_require__(224);
+
+	var CardActions = _interopRequireWildcard(_CardActions);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CardDefinition = function (_React$Component) {
+	    _inherits(CardDefinition, _React$Component);
+
+	    function CardDefinition() {
+	        _classCallCheck(this, CardDefinition);
+
+	        var _this = _possibleConstructorReturn(this, (CardDefinition.__proto__ || Object.getPrototypeOf(CardDefinition)).call(this));
+
+	        _this.state = { editing: false };
+
+	        return _this;
+	    }
+
+	    _createClass(CardDefinition, [{
+	        key: "handleInputDisplayClick",
+	        value: function handleInputDisplayClick(e) {
+
+	            this.setState({ editing: true });
+	        }
+	    }, {
+	        key: "handleDoneEditing",
+	        value: function handleDoneEditing(e) {
+
+	            this.setState({ editing: false });
+	        }
+	    }, {
+	        key: "handleTranslateRequest",
+	        value: function handleTranslateRequest() {
+
+	            CardActions.sendValueToTranslate(this.props.cardKey, this.props.text, this.props.toOriginLang);
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+
+	            console.log("editing?", this.state.editing);
+	            var inputClickHandler = this.state.editing ? function () {
+	                return false;
+	            } : this.handleInputDisplayClick.bind(this),
+	                additionalClasses = this.state.editing ? "editing" : "";
+
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "card-definition card-definition-" + this.props.label + " " + additionalClasses },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "card-input-container" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "card-input-input", onClick: inputClickHandler },
+	                        _react2.default.createElement("input", { className: "card-input", onFocus: this.handleInputDisplayClick.bind(this), onBlur: this.handleDoneEditing.bind(this), ref: "definitionInput", value: this.props.text, onChange: this.props.onInputChange }),
+	                        _react2.default.createElement("span", { className: "ui ui-edit" })
+	                    ),
+	                    _react2.default.createElement(
+	                        "button",
+	                        { className: "card-done-editing", onClick: this.handleDoneEditing.bind(this) },
+	                        "Done"
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    null,
+	                    _react2.default.createElement(
+	                        "span",
+	                        { className: "card-input-language" },
+	                        this.props.language
+	                    ),
+	                    _react2.default.createElement(
+	                        "span",
+	                        { className: "card-translate-from-def", onClick: this.handleTranslateRequest.bind(this) },
+	                        "translate this phrase to ",
+	                        this.props.toLanguage
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CardDefinition;
+	}(_react2.default.Component);
+
+		exports.default = CardDefinition;
 
 /***/ }
 /******/ ]);

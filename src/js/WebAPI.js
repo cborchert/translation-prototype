@@ -15,12 +15,14 @@ export function getTranslation( cardKey, value, toOriginLang ) {
         transDir = toOriginLang?"from=eng&dest=fra":"from=fra&dest=eng",
         format = "format=json&pretty=true",
         phrase = "phrase="+value,
-        src = baseUrl+transDir+"&"+format+"&"+phrase;
-
-    axios.get(src)
+        phraseLower = "phrase="+value.toLowerCase(),
+        src = baseUrl+transDir+"&"+format+"&"+phrase,
+        srcLower = baseUrl+transDir+"&"+format+"&"+phraseLower;
+ 
+    axios.get(srcLower)
     .then(function (response) {
 
-        var firstResponse = typeof response.data.tuc[0] == "undefined"?"":response.data.tuc[0],
+        var firstResponse = typeof response.data.tuc == "undefined" || typeof response.data.tuc[0] == "undefined"?"":response.data.tuc[0],
             firstResponsePhrase = typeof firstResponse["phrase"] == "undefined"?"":firstResponse["phrase"],
             firstResponseText = typeof firstResponsePhrase["text"] == "undefined"?"":firstResponsePhrase["text"],
             firstResponseMeanings = firstResponse["meanings"],

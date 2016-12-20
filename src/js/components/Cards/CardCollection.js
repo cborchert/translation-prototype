@@ -34,6 +34,8 @@ export default class CardCollection extends React.Component{
     
     updateCards() {
         
+        //console.log("got an update!");
+        
         var cardFeed = CardStore.getCards();
         
         this.setState({
@@ -48,7 +50,8 @@ export default class CardCollection extends React.Component{
      
         var cardFeed = this.state.cardFeed.map( (card) => {
            
-            return <Card key={card.key} cardData={card.cardData} />
+            //console.log( card.key, card.cardData );
+            return <Card key={card.key} cardKey={card.key} cardData={card.cardData} />
             
         });
         
