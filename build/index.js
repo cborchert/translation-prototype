@@ -25588,7 +25588,7 @@
 	            firstResponseFirstMeaningText = typeof firstResponseFirstMeaning["text"] == "undefined" ? "" : firstResponseFirstMeaning["text"],
 	            responseValue = firstResponseText == "" ? firstResponseFirstMeaningText : firstResponseText;
 
-	        responseValue = responseValue.replace(/(\[<)+(?:.|\n)*?(\]>)+/gm, '');
+	        responseValue = responseValue.replace(/(\[<)*(?:.|\n)*?(\]>)*/gm, '');
 	        //        responseValue = responseValue.replace(/\[(?:.|\n)*?\]/gm, '');
 
 	        var back = toOriginLang ? value : responseValue,
@@ -29127,6 +29127,15 @@
 
 	        var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this));
 
+	        _this.state = {
+
+	            expanded: false,
+	            entriesOpen: true,
+	            examplesOpen: false,
+	            wordreferenceOpen: false,
+	            lingueeOpen: false
+
+	        };
 	        _this.updateFrontText = _this.updateFrontText.bind(_this);
 	        _this.updateBackText = _this.updateBackText.bind(_this);
 
@@ -29150,6 +29159,74 @@
 
 	            cardData.backText = e.target.value;
 	            CardActions.updateCard(this.props.cardKey, cardData);
+	        }
+	    }, {
+	        key: "removeCard",
+	        value: function removeCard(e) {
+
+	            e.preventDefault();
+	            CardActions.removeCard(this.props.cardKey);
+	        }
+	    }, {
+	        key: "toggleCardExpand",
+	        value: function toggleCardExpand(e) {
+
+	            e.preventDefault();
+	            if (this.state.expanded) {
+
+	                this.setState({ expanded: false });
+	            } else {
+
+	                this.setState({ expanded: true });
+	            }
+	        }
+	    }, {
+	        key: "handleActivateEntries",
+	        value: function handleActivateEntries(e) {
+
+	            e.preventDefault();
+	            this.setState({
+	                entriesOpen: true,
+	                examplesOpen: false,
+	                wordreferenceOpen: false,
+	                lingueeOpen: false
+	            });
+	        }
+	    }, {
+	        key: "handleActivateExamples",
+	        value: function handleActivateExamples(e) {
+
+	            e.preventDefault();
+	            this.setState({
+	                entriesOpen: false,
+	                examplesOpen: true,
+	                wordreferenceOpen: false,
+	                lingueeOpen: false
+	            });
+	        }
+	    }, {
+	        key: "handleActivateWordreference",
+	        value: function handleActivateWordreference(e) {
+
+	            e.preventDefault();
+	            this.setState({
+	                entriesOpen: false,
+	                examplesOpen: false,
+	                wordreferenceOpen: true,
+	                lingueeOpen: false
+	            });
+	        }
+	    }, {
+	        key: "handleActivateLinguee",
+	        value: function handleActivateLinguee(e) {
+
+	            e.preventDefault();
+	            this.setState({
+	                entriesOpen: false,
+	                examplesOpen: false,
+	                wordreferenceOpen: false,
+	                lingueeOpen: true
+	            });
 	        }
 
 	        //Throughout, we need to convert strings to html 
@@ -29207,17 +29284,18 @@
 	                );
 	            });
 
+	            var additionalClasses = this.state.expanded ? "expanded" : "",
+	                entriesClass = this.state.entriesOpen ? "active" : "",
+	                examplesClass = this.state.examplesOpen ? "active" : "",
+	                wordreferenceClass = this.state.wordreferenceOpen ? "active" : "",
+	                lingueeClass = this.state.lingueeOpen ? "active" : "";
+
 	            return _react2.default.createElement(
 	                "div",
-	                { className: "card", id: "card-" + this.props.cardKey },
+	                { className: "card " + additionalClasses, id: "card-" + this.props.cardKey },
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "card-body" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "card-menu-button" },
-	                        "menu"
-	                    ),
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "card-definitions" },
@@ -29226,13 +29304,14 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: "card-ok-button" },
-	                        "Ok"
+	                        { className: "card-delete-button", onClick: this.removeCard.bind(this) },
+	                        _react2.default.createElement("span", { className: "ui ui-trash" })
 	                    ),
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: "card-expand-button" },
-	                        "expand"
+	                        { className: "card-expand-button", onClick: this.toggleCardExpand.bind(this) },
+	                        _react2.default.createElement("span", { className: "ui ui-plus-square" }),
+	                        _react2.default.createElement("span", { className: "ui ui-minus-square" })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -29240,30 +29319,62 @@
 	                    { className: "card-extra" },
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: "entries" },
+	                        { className: "card-extra-menu-buttons" },
 	                        _react2.default.createElement(
-	                            "h3",
-	                            null,
+	                            "button",
+	                            { className: entriesClass, onClick: this.handleActivateEntries.bind(this) },
 	                            "Entries"
 	                        ),
 	                        _react2.default.createElement(
+	                            "button",
+	                            { className: examplesClass, onClick: this.handleActivateExamples.bind(this) },
+	                            "Examples"
+	                        ),
+	                        _react2.default.createElement(
+	                            "button",
+	                            { className: wordreferenceClass, onClick: this.handleActivateWordreference.bind(this) },
+	                            "Word Reference"
+	                        ),
+	                        _react2.default.createElement(
+	                            "button",
+	                            { className: lingueeClass, onClick: this.handleActivateLinguee.bind(this) },
+	                            "Linguee"
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "entries extra-content-single " + entriesClass },
+	                        _react2.default.createElement(
 	                            "div",
-	                            { className: "entries-body" },
+	                            { className: "extra-content-single-body" },
 	                            parsedEntries
 	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: "examples" },
-	                        _react2.default.createElement(
-	                            "h3",
-	                            null,
-	                            "Examples"
-	                        ),
+	                        { className: "examples extra-content-single " + examplesClass },
 	                        _react2.default.createElement(
 	                            "div",
-	                            { className: "examples-body" },
+	                            { className: "extra-content-single-body" },
 	                            parsedExamples
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "word-reference extra-content-single " + wordreferenceClass },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "extra-content-single-body" },
+	                            _react2.default.createElement("iframe", { src: "http://www.wordreference.com/enfr/" + this.props.cardData.frontText })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "linguee extra-content-single " + lingueeClass },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "extra-content-single-body" },
+	                            _react2.default.createElement("iframe", { src: "http://www.linguee.fr/francais-anglais/search?source=auto&query=" + this.props.cardData.frontText })
 	                        )
 	                    )
 	                )

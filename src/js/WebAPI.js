@@ -30,7 +30,7 @@ export function getTranslation( cardKey, value, toOriginLang ) {
             firstResponseFirstMeaningText = typeof firstResponseFirstMeaning["text"] == "undefined"?"":firstResponseFirstMeaning["text"],
             responseValue = firstResponseText == ""?firstResponseFirstMeaningText:firstResponseText;
             
-        responseValue = responseValue.replace(/(\[<)+(?:.|\n)*?(\]>)+/gm, '');
+        responseValue = responseValue.replace(/(\[<)*(?:.|\n)*?(\]>)*/gm, '');
 //        responseValue = responseValue.replace(/\[(?:.|\n)*?\]/gm, '');
         
         var back = toOriginLang?value:responseValue,

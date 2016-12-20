@@ -44,6 +44,7 @@ body .button {
     display: inline-block;
     vertical-align: bottom;
     box-sizing: border-box;
+    cursor: pointer;
 
 }
 
@@ -54,6 +55,7 @@ span.ui {
     height: 12px;
     display: inline-block;
     background: cover;
+    cursor: pointer;
 
     &.ui-edit { background-image: url(./img/ui-pencil.png); }
     &.ui-pencil { background-image: url(./img/ui-pencil.png); }
@@ -61,6 +63,7 @@ span.ui {
     &.ui-gear { background-image: url(./img/ui-gear.png); }
     &.ui-plus { background-image: url(./img/ui-plus.png); }
     &.ui-plus-square { background-image: url(./img/ui-plus-square.png); }
+    &.ui-minus-square { background-image: url(./img/ui-minus-square.png); }
     &.ui-chevron-down { background-image: url(./img/ui-chevron-down.png); }
     &.ui-chevron-circle-down { background-image: url(./img/ui-chevron-circle-down.png); } 
     
@@ -113,11 +116,36 @@ span.ui {
     border-radius: 4px;
     box-shadow: 0 0 2px rgba(0,0,0,0.5);
     padding: 10px;
-    margin: 10px 0 20px;
+    margin: 20px 0 0;
+    
+    span.ui-minus-square {
+        
+        display: none;
+        
+    }
     
 }
 
-.card-menu-button, .card-ok-button, .card-expand-button { display: none; }
+.card-body {
+
+    position: relative;
+    
+    .card-delete-button {
+        
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+    
+    .card-expand-button {
+        
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        
+    }
+    
+}
 
 .card-definitions { @extend .clearfix;}
 
@@ -126,6 +154,10 @@ span.ui {
     margin: 0;
     float: left;
     padding: 10px;
+    width: calc(50% - 10px);
+    min-width: 300px;
+    max-width: calc(100% - 20px);
+    box-sizing: border-box;
     
     span.card-input-language {
     
@@ -143,6 +175,7 @@ span.ui {
         font-size: 0.8em;
         font-style: italic;
         padding: 2px;
+        margin-right: 80px;
         float: right;
         color: #afceff;
         cursor: pointer;
@@ -154,6 +187,7 @@ span.ui {
         display: inline-block;
         vertical-align: top;
         cursor: pointer;
+        width: 100%;
         
     }
     
@@ -162,9 +196,9 @@ span.ui {
         display: inline-block;
         color: white;
         background: transparent;
-        min-width: 300px;
+        width: 100%;
         height: 32px;
-        padding: 10px 2px 2px;
+        padding: 10px 20px 2px 2px;
         transition: 400ms; 
         font-size: 1em;
         cursor: pointer;
@@ -175,6 +209,7 @@ span.ui {
         
         position: relative;
         display: inline-block;
+        width: calc(100% - 75px);
         
         span.ui {
         
@@ -207,9 +242,9 @@ span.ui {
         input {
         
             display: inline-block;
-            min-width: 300px;
+            //min-width: 300px;
             height: 45px;
-            width: auto;
+            //width: auto;
             opacity: 1;
             background: #ecf0f1;
             color: #2c3e50;
@@ -249,6 +284,7 @@ span.ui {
     
     @extend .clearfix;
     
+    display: none;
     background: white;
     border-top: 4px solid #2c3e50;
     padding: 20px;
@@ -294,27 +330,75 @@ span.ui {
         
     }
     
-    .examples-body, .entries-body {
-     
-        max-height: 200px;
-        overflow-y: auto;
-        
-        box-shadow: 0 0 2px rgba(0,0,0,0.5) inset;
-        padding: 10px;
-        border-radius: 4px;
-        
-    }
-    
-    .examples, .entries {
+    .extra-content-single {
      
         width: 500px;
         max-width: 100%;
         float: left;
         padding: 10px;
+        display: none;
+        
+        &.active {
+            
+            display: block;
+            
+        }
+        
+        &.word-reference, &.linguee {
+            
+            width: 100%;
+            
+        }
+        
+        
+    }
+    
+    .extra-content-single-body {
+     
+        max-height: 300px;
+        max-width: 100%;
+        overflow-y: auto;
+        box-shadow: 0 0 2px rgba(0,0,0,0.5) inset;
+        padding: 10px;
+        border-radius: 4px;
+        
+        iframe {
+            
+            width: 100%;
+            height: 100%;
+            
+        }
+        
+    }
+    
+    .card-extra-menu-buttons {
+        
+        button {
+            
+            background: #ecf0f1;
+            border-bottom: 2px solid #ecf0f1;
+            
+            &.active {
+                
+                background: white;
+                border-bottom: 2px solid #2c8a0e;
+                
+            }
+            
+        }
         
     }
     
 }
+
+.card.expanded {
+    
+    .card-extra { display: block; }
+    span.ui-minus-square { display: block; }
+    span.ui-plus-square { display: none; }
+    
+}
+    
 
 
 
